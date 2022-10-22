@@ -54,7 +54,7 @@ class MoveHead(Enum):
 
 
 class FinalState:
-    def to_string():
+    def to_string(self):
         return "Final State"
 
     def __repr__(self):
@@ -62,7 +62,7 @@ class FinalState:
 
 
 class EmptySymbol:
-    def to_string():
+    def to_string(self):
         return "_"
 
     def __repr__(self):
@@ -78,12 +78,28 @@ class RuleLeftPart:
         self.symbol = symbol
 
     def __str__(self):
-        result = "(" + self.state + ", "
-        if self.symbol is EmptySymbol:
+        result = ""
+        if isinstance(self.state, FinalState):
+            result += "(" + self.state.to_string() + ", "
+        else:
+            result += "(" + str(self.state) + ", "
+        
+        if isinstance(self.symbol, EmptySymbol):
             result += self.symbol.to_string() + ")"
         else:
             result += str(self.symbol) + ")"
         return result
+
+    def __key(self):
+        return (self.state, self.symbol)
+
+    def __hash__(self):
+        return hash(self.__key())
+
+    def __eq__(self, other):
+        if isinstance(other, RuleLeftPart):
+            return self.__key() == other.__key()
+        return NotImplemented
 
 
 class RuleRightPart:
@@ -99,7 +115,7 @@ class RuleRightPart:
     def __str__(self):
         result = "("
 
-        if self.new_symbol is EmptySymbol:
+        if isinstance(self.new_symbol, EmptySymbol):
             result += self.new_symbol.to_string() + ")"
         else:
             result += str(self.new_symbol) + ", "
@@ -111,7 +127,7 @@ class RuleRightPart:
         else:
             result += "None, "
         
-        if self.new_state is FinalState:
+        if isinstance(self.new_state, FinalState):
             result += self.new_state.to_string() + ")"
         else:
             result += str(self.new_state) + ")"
@@ -195,11 +211,16 @@ def p_expr_rule(p):
 def p_def_rule(p):
     'def_rule : left_part BIND right_part'
     p[0] = (p[1], p[3])
-    machine.rules[p[0][0]] = p[0][1]
+    if p[0][0] in machine.rules:
+        print("UB: multiple definition for rule " + str(p[0][0]))
+    else:
+        machine.rules[p[0][0]] = p[0][1]
 
 def p_left_part(p):
     'left_part : L_BR state SEPR symbol R_BR'
     p[0] = RuleLeftPart(p[2], p[4])
+    if isinstance(p[0].state, FinalState):
+        print("UB: Final State in left part of rule " + str(p[0]))
 
 def p_right_part(p):
     'right_part : L_BR opt_symbol SEPR opt_move_head SEPR opt_state R_BR'
