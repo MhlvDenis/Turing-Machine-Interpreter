@@ -8,6 +8,9 @@ from typing import Union
 # expr : def_alphabet
 #      | def_states
 #      | def_rule
+#      | comment
+
+# comment : COMMENT
 
 # def_alphabet : DEF_ALPH L_BR alp_symbols R_BR
 #
@@ -251,6 +254,15 @@ def p_error(p):
         t = f"{p.type}({p.value}) at {p.lineno}:{p.lexpos}"
         print(f"Syntax error: Unexpected {t}", p)
     
+
+def p_expr_comment(p):
+    'expr : comment'
+    p[0] = p[1]
+
+def p_comment_comment(p):
+    'comment : COMMENT'
+    p[0] = p[1]
+
 
 def main():
     if len(sys.argv) > 1:

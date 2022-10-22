@@ -1,5 +1,6 @@
 Alphabet('0', '1', _)
 States($0, $1, $!)
+# comment inside program
 ($0, '0') -> (None, R, None)
 ($0, '1') -> (None, R, None)
 ($0, _) -> (None, L, $1)

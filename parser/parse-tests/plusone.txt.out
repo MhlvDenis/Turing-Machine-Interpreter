@@ -1,5 +1,5 @@
-Alphabet: {'1', '0', _}
-States: {'1', '0', Final State}
+Alphabet: {'0', _, '1'}
+States: {'0', Final State, '1'}
 Rules: 
 	(0, 0) -> (None, Right, None)
 	(0, 1) -> (None, Right, None)

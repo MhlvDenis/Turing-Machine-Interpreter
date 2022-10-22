@@ -13,6 +13,7 @@ tokens = [
     "DEF_STATES",
     "EMPTY_SYMBOL",
     "MOVE_HEAD",
+    "COMMENT"
 ]
 
 t_BIND = r'->'
@@ -36,6 +37,12 @@ def t_SYMBOL(t):
 
 def t_STATE(t):
     r'\$(\!|[0-9]+)'
+    t.value = t.value[1:]
+    return t
+
+
+def t_COMMENT(t):
+    r'\#.*'
     t.value = t.value[1:]
     return t
 
