@@ -1,0 +1,6 @@
+Alphabet: {'a', 'b', _}
+States: {'0', Final State}
+Rules: 
+	(0, a) -> (None, Right, None)
+	(0, b) -> (None, Right, None)
+	(0, _) -> (a, None, Final State)

@@ -11,9 +11,8 @@ tokens = [
     "STATE", 
     "DEF_ALPH",
     "DEF_STATES",
-    "ANY_SYMBOL",
-    "MOVE_LEFT",
-    "MOVE_RIGHT"
+    "EMPTY_SYMBOL",
+    "MOVE_HEAD",
 ]
 
 t_BIND = r'->'
@@ -23,9 +22,8 @@ t_NONE = r'None'
 t_SEPR = r','
 t_DEF_ALPH = r'Alphabet'
 t_DEF_STATES = r'States'
-t_ANY_SYMBOL = r'_'
-t_MOVE_LEFT = r'L'
-t_MOVE_RIGHT = r'R'
+t_EMPTY_SYMBOL = r'_'
+t_MOVE_HEAD = r'(L|R)'
 
 t_ignore = ' \t'
 
