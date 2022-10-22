@@ -1,0 +1,5 @@
+Alphabet('a', 'b')
+States($0, $!)
+($0, 'a') -> (None, R, None)
+($0, 'b') -> (None, R, None)
+($0, _) -> ('a', None, $!)
