@@ -1,7 +1,8 @@
-Alphabet: {'b', 'a', _}
+Alphabet: {_, 'b', 'a'}
 States: {Final State, '0'}
 Rules: 
 	(0, a) -> (None, Right, None)
 	(0, b) -> (None, Right, None)
 	(0, _) -> (a, None, Final State)
 	(Final State, b) -> (None, None, None)
+	(3, c) -> (d, Left, 2)

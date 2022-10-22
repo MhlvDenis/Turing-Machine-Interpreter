@@ -60,6 +60,17 @@ class FinalState:
     def __repr__(self):
         return "Final State"
 
+    def __key(self):
+        return ("FinalState")
+
+    def __hash__(self):
+        return hash(self.__key())
+    
+    def __eq__(self, other):
+        if isinstance(other, FinalState):
+            return self.__key() == other.__key()
+        return NotImplemented
+
 
 class EmptySymbol:
     def to_string(self):
@@ -67,6 +78,17 @@ class EmptySymbol:
 
     def __repr__(self):
         return "_"
+
+    def __key(self):
+        return ("EmptySymbol")
+
+    def __hash__(self):
+        return hash(self.__key())
+    
+    def __eq__(self, other):
+        if isinstance(other, EmptySymbol):
+            return self.__key() == other.__key()
+        return NotImplemented
 
 
 class RuleLeftPart:
@@ -148,6 +170,29 @@ class TuringMachine:
             result += "\t" + str(left_part) + " -> " + str(self.rules[left_part]) + "\n"
         return result
 
+    def is_valid(self):
+        if '0' not in self.states:
+            print("Start state is missed")
+        if FinalState() not in self.states:
+            print("Final state is missed")
+        if EmptySymbol() not in self.alphabet:
+            print("Empty symbol is missed")
+
+        for left_part in self.rules:
+            def print_exception(s, c):
+                print("Unexpected " + s + " " + str(c) + " in rule " + str(left_part))
+
+            right_part = self.rules[left_part]
+
+            if left_part.symbol not in self.alphabet:
+                print_exception("symbol", left_part.symbol)
+            if left_part.state not in self.states:
+                print_exception("state", left_part.state)
+            if right_part.new_symbol is not None and right_part.new_symbol not in self.alphabet:
+                print_exception("symbol", right_part.new_symbol)
+            if right_part.new_state is not None and right_part.new_state not in self.states:
+                print_exception("state", right_part.new_state)
+            
 machine = TuringMachine()
 
 
@@ -294,6 +339,7 @@ def main():
             for line in fin.readlines():
                 parser.parse(line)
 
+            machine.is_valid()
             print(str(machine), file=fout, end='')
 
 
